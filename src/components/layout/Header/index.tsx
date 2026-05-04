@@ -4,7 +4,7 @@ import { FaUserAstronaut, FaFilm } from "react-icons/fa";
 export function Header(){
 
     return (
-        <div className="h-20 w-full px-4 bg-linear-to-b from-indigo-950 to-slate-950 from-60%">
+        <div className="h-20 w-full px-4 bg-linear-to-b from-indigo-950 to-slate-950 from-90%">
             <header className="h-20 w-full max-w-7xl flex items-center gap-2 justify-between mx-auto">
 
                 <div className="flex items-center gap-2">
