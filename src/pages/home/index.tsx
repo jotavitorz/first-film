@@ -5,12 +5,12 @@ import { IoSearchOutline } from "react-icons/io5";
 
 
 export function Home() {
-    const { filmes } = useContext(FavoritesContext);
+    const { filmes, handleLoadMore, loading } = useContext(FavoritesContext);
     const filmeDestaque = filmes[0];
 
     if(filmes.length === 0){
         return (
-            <div className="w-full min-h-screen bg-linear-to-b to-indigo-950 from-slate-950 from-60%">
+            <div className="">
                 <h2 className="pt-10 text-center text-neutral-200 text-3xl font-bold">Carregando Filmess...</h2>
             </div>
         )
@@ -76,7 +76,6 @@ export function Home() {
                 <section className="grid grid-cols-5 gap-6 text-neutral-200">
                 {filmes.map((item) => (
                     
-
                     <div key={item.id} className="mb-10">
                         <img 
                             className="object-cover h-full min-h-72 w-full rounded-md"
@@ -90,7 +89,16 @@ export function Home() {
                     </div>              
                 
                 ))}
-                </section>      
+                </section>
+                
+                <div className="flex items-center justify-end-safe">
+                    <button 
+                        onClick={handleLoadMore} 
+                        disabled={loading} 
+                        className="mt-10 font-bold cursor-pointer bg-indigo-500 py-2 px-4 rounded-md">
+                        {loading ? "Carregando..." : "Carregar mais"}
+                    </button>  
+                </div>    
             </main>
         </div>
     )
