@@ -21,6 +21,8 @@ interface FilmesProps {
 
 interface FavoritesProps {
     filmes: FilmesProps[];
+    handleLoadMore: () => void;
+    loading: boolean;
 }
 
 const FavoritesContext = createContext({} as FavoritesProps);
@@ -31,34 +33,44 @@ interface ChildrenProviderProps {
 
 export function FavoritesProvider({ children}: ChildrenProviderProps) {
     const [filmes, setFilmes] = useState<FilmesProps[]>([]);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+
+    async function loadFilms(pageNumber: number) {
+
+        setLoading(true);
+        
+        try {
+            const response = await api.get("movie/now_playing", {
+                params: {
+                    api_key: import.meta.env.VITE_API_KEY,
+                    language: "pt-BR",
+                    page: pageNumber,
+                }
+            })
+
+            const allFilm = response.data.results.slice(0, 10);
+            setFilmes([...filmes, ...allFilm]);
+
+        }catch(error) {
+            console.log("Error: " + error)
+        }finally {
+            setLoading(false);
+        }
+    }
 
     useEffect(() => {
+        loadFilms(page);
+    }, [page])
 
-        async function loadFilm() {
-            
-            try {
-                const response = await api.get("movie/now_playing", {
-                    params: {
-                        api_key: import.meta.env.VITE_API_KEY,
-                        language: "pt-BR",
-                        page: 1,
-                    }
-                })
-
-                const allFilm = response.data.results.slice(0, 10);
-                setFilmes([...filmes, ...allFilm]);
-
-            }catch(error) {
-                console.log("Error: " + error)
-            }
-        }
-
-        loadFilm();
-
-    }, [])
+    function handleLoadMore() {
+        const nextPage = page + 1;
+        setPage(nextPage);
+        loadFilms(nextPage);
+    }
 
     return (
-        <FavoritesContext.Provider value={{filmes}}>
+        <FavoritesContext.Provider value={{filmes, handleLoadMore, loading}}>
             {children}
         </FavoritesContext.Provider>
     )
