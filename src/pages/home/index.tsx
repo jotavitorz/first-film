@@ -40,7 +40,16 @@ export function Home() {
                             </div>
 
                             <div className="flex gap-8 mt-6 lg:mt-8">
-                                <button className="cursor-pointer bg-indigo-500 py-2 px-8 font-bold rounded-md">Trailer</button>
+
+                                <a 
+                                    rel="external noopener" 
+                                    target="_blank" 
+                                    href={`https://www.youtube.com/results?search_query=${filmeDestaque.title}`} 
+                                    className="cursor-pointer bg-indigo-500 py-2 px-8 font-bold rounded-md"
+                                >
+                                    Trailer
+                                </a>
+                                
                                 <Link to={`/movie/${filmeDestaque.id}`} className="cursor-pointer bg-indigo-500 py-2 px-8 font-bold rounded-md">Detalhes</Link>
                             </div>                    
                         </div>
