@@ -25,31 +25,31 @@ export function MovieDetail() {
     }
 
     return (
-        <main className="w-full min-h-dvh">
+        <main className="w-full h-full min-h-dvh">
 
-            <div className="flex w-full h-full overflow-hidden">
-                <section className="bg-neutral-950 w-10/12 flex min-h-dvh py-8 sm:py-16 overflow-hidden">
+            <div className="flex flex-col-reverse lg:flex-row w-full h-full overflow-hidden">
+                <section className="bg-neutral-950 w-full lg:w-10/12 flex lg:min-h-dvh pt-2 pb-14 md:py-16 overflow-hidden">
                     {filme && (
-                        <div className="w-full h-full flex items-center pl-8 md:flex-row md:justify-around text-neutral-200">
+                        <div className="w-full px-1 h-full flex items-center pl-4 lg:pl-8 md:flex-row md:justify-around text-neutral-200 overflow-hidden">
 
                             <div className="flex-1 flex flex-col mt-10 md:mt-0">
 
-                                <h3 className="text-4xl lg:text-5xl font-bold">
+                                <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
                                     {filme.title}
                                 </h3>
 
-                                <p className="sm:w-11/12 mt-4 lg:mt-8 mb-2 lg:mb-4 lg:text-lg xl:text-xl">
+                                <p className="w-11/12 mt-4 lg:mt-8 mb-2 lg:mb-4 lg:text-lg xl:text-xl">
                                     {filme.overview}
                                 </p>
                                 
                                 <div className="flex lg:text-lg gap-2">
                                     <span>⭐⭐⭐⭐⭐</span>
-                                    <strong>{filme.vote_average} / 10</strong>
+                                    <strong>{filme.vote_average.toFixed(1)} / 10</strong>
                                 </div>
 
-                                <div className="flex gap-2 font-bold mt-4">
+                                <div className="grid grid-cols-2 sm:flex gap-2 max-w-72 font-bold mt-4 text-center">
                                     {filme.genres.length > 0 && filme.genres.map((genre) => (
-                                        <span key={genre.id} className="rounded-md border-indigo-500 border-2 px-1.5 text-neutral-200" >
+                                        <span key={genre.id} className="rounded-md border-indigo-500  border-2 px-1.5 text-neutral-200" >
                                             {genre.name}
                                         </span>
                                     ))}
@@ -72,12 +72,10 @@ export function MovieDetail() {
                     }
                 </section>
 
-                <section className="w-full min-h-dvh bg-no-repeat bg-cover bg-center hover:scale-102 duration-300 overflow-hidden"
+                <section className="w-full h-96 md:w-full md:min-h-dvh bg-no-repeat bg-cover bg-center hover:scale-102 duration-300 overflow-hidden"
                     style={{backgroundImage: filme?.backdrop_path && `url(https://image.tmdb.org/t/p/original${filme.backdrop_path})`}}
                 >
-                    <div className="w-full min-h-dvh bg-linear-to-l to-neutral-950 from-white-950 from-60%">
-
-                    </div>
+                    <div className="w-full md:min-h-dvh bg-linear-to-l to-neutral-950 from-white-950 from-60%"></div>
                 </section>
             </div>
             
