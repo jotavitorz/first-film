@@ -3,7 +3,7 @@ import { FavoritesContext } from "../../contexts/FavoritesContext";
 import { useParams, useNavigate } from "react-router-dom";
 
 export function MovieDetail() {
-    const { loadFilm, filme, loading } = useContext(FavoritesContext);
+    const { loadFilm, filme, loading, addFilm } = useContext(FavoritesContext);
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -59,6 +59,7 @@ export function MovieDetail() {
                                     <button className="cursor-pointer bg-indigo-500 py-2 px-8 font-bold rounded-md">Trailer</button>
                                     <button 
                                         className="cursor-pointer bg-indigo-500 py-2 px-8 font-bold rounded-md"
+                                        onClick={() => addFilm(filme)}
                                     >
                                         Salvar
                                     </button>

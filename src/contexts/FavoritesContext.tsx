@@ -13,6 +13,13 @@ interface FilmesProps {
     original_language: string;
 }
 
+interface FavoritesFilmProp {
+    title: string;
+    id: number;
+    vote_average: number;
+    watched?: boolean;
+}
+
 interface GenresProps {
     id: number;
     name: string;
@@ -42,6 +49,8 @@ interface FavoritesProps {
     loading: boolean;
     loadFilm: (id: string) => void; 
     filme: FilmeProps | undefined;
+    addFilm: (filme: FavoritesFilmProp) => void;
+    favList: FavoritesFilmProp[];
 }
 
 const FavoritesContext = createContext({} as FavoritesProps);
@@ -55,6 +64,12 @@ export function FavoritesProvider({ children}: ChildrenProviderProps) {
     const [filme, setFilme] = useState<FilmeProps | undefined>();
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [favList, setFavList] = useState<FavoritesFilmProp[]>(
+        () => {
+            const storage = localStorage.getItem("@favoritesMovie");
+            return storage ? JSON.parse(storage) : [];
+        }
+    );
 
     async function loadFilms(pageNumber: number) {
 
@@ -106,11 +121,18 @@ export function FavoritesProvider({ children}: ChildrenProviderProps) {
     function handleLoadMore() {
         const nextPage = page + 1;
         setPage(nextPage);
-        loadFilms(nextPage);
     }
 
+    function addFilm(filme: FavoritesFilmProp){
+        setFavList((prev) => [...prev, {...filme, watched: false}]);   
+    }
+
+    useEffect(() => {
+        localStorage.setItem("@favoritesMovie", JSON.stringify(favList));
+    }, [favList])
+
     return (
-        <FavoritesContext.Provider value={{filmes, handleLoadMore, loading, loadFilm, filme}}>
+        <FavoritesContext.Provider value={{filmes, handleLoadMore, loading, loadFilm, filme, addFilm, favList}}>
             {children}
         </FavoritesContext.Provider>
     )
