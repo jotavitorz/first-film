@@ -51,6 +51,8 @@ interface FavoritesProps {
     filme: FilmeProps | undefined;
     addFilm: (filme: FavoritesFilmProp) => void;
     favList: FavoritesFilmProp[];
+    deleteFilm: (id: number) => void;
+    changeWatched: (watched: boolean, id: number) => void;
 }
 
 const FavoritesContext = createContext({} as FavoritesProps);
@@ -124,7 +126,26 @@ export function FavoritesProvider({ children}: ChildrenProviderProps) {
     }
 
     function addFilm(filme: FavoritesFilmProp){
-        setFavList((prev) => [...prev, {...filme, watched: false}]);   
+        if(favList.find((favFilm) => favFilm.id === filme.id)){
+            alert("filme salvo");
+            return;
+        }
+
+        setFavList((prev) => [...prev, {...filme, watched: false}]);  
+    }
+
+    function deleteFilm(id: number){
+        const newList = favList.filter(item => item.id !== id);
+        setFavList(newList);
+    }
+
+    function changeWatched(watched: boolean, id: number) {
+
+        setFavList((prev) => 
+            prev.map((item) =>
+                item.id === id ? {...item, watched: watched} : item
+            )
+        );
     }
 
     useEffect(() => {
@@ -132,7 +153,7 @@ export function FavoritesProvider({ children}: ChildrenProviderProps) {
     }, [favList])
 
     return (
-        <FavoritesContext.Provider value={{filmes, handleLoadMore, loading, loadFilm, filme, addFilm, favList}}>
+        <FavoritesContext.Provider value={{filmes, handleLoadMore, loading, loadFilm, filme, addFilm, favList, deleteFilm, changeWatched}}>
             {children}
         </FavoritesContext.Provider>
     )
