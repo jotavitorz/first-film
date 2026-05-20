@@ -9,23 +9,23 @@ export function Favorites() {
     const watched = favList.filter(item => item.watched === true);
 
     return (
-        <main className="w-full min-h-screen">
-            <section className="bg-indigo-500 max-w-2xl my-16 mx-auto rounded-md py-4 px-6 flex justify-around">
-                <FaUserAstronaut className="text-neutral-200" size={68} />
+        <main className="w-full min-h-screen px-4 mb-16">
+            <section className="sm:bg-indigo-500 max-w-2xl my-16 mx-auto rounded-md py-4 px-6 flex flex-col items-center gap-4 sm:flex-row justify-around">
+                <FaUserAstronaut className="text-neutral-200 text-6xl sm:text-7xl" />
 
-                <div className="flex items-center gap-6 text-neutral-200 font-bold select-none">
+                <div className="bg-indigo-500 rounded-md px-4 py-2 sm:px-0 sm:py-0 flex items-center gap-6 text-neutral-200 font-bold select-none">
 
-                    <div className="text-3xl flex flex-col items-center">
+                    <div className="text-2xl sm:text-3xl flex flex-col items-center">
                         <p>{favList.length}</p>
                         <span>filmes</span>
                     </div>
 
-                    <div className="text-3xl flex flex-col items-center"> 
+                    <div className="text-2xl sm:text-3xl flex flex-col items-center"> 
                         <p>{watched.length}</p>
                         <span>Assistidos</span>
                     </div>
 
-                    <div className="text-3xl flex flex-col items-center">
+                    <div className="text-2xl sm:text-3xl flex flex-col items-center">
                         <p>{favList.length - watched.length}</p>
                         <span>Assistir</span>
                     </div>
@@ -33,18 +33,19 @@ export function Favorites() {
 
             </section>
 
-            <section className="px-4 flex flex-col gap-2 max-w-5xl mx-auto text-indigo-200">
+            <section className="flex flex-col gap-4 sm:gap-2 max-w-5xl mx-auto text-indigo-200">
 
                 {favList.map((movie) => (
                     <div 
-                        className={`rounded-md flex my-2 px-6 text-neutral-200 font-bold justify-between shadow-lg ${movie.watched ? "shadow-indigo-600" : "shadow-indigo-200"}`}
+                        className={`rounded-md flex flex-col md:flex-row my-2 px-6 text-neutral-200 font-bold md:justify-between shadow-lg ${movie.watched ? "shadow-indigo-600" : "shadow-indigo-200"}`}
                     >
 
-                        <div className="flex gap-2 text-xl py-1">
-                            <p>{movie.title} |</p>
-                            <strong> {movie.vote_average.toFixed(1)} / 10</strong>                        
+                        <div className="flex gap-2 text-lg sm:text-xl py-1">
+                            <p>{movie.title} </p>
+                            <strong className="hidden sm:block">| {movie.vote_average.toFixed(1)} / 10</strong>                        
                         </div>
-                        <div className="flex gap-2 text-xl">
+
+                        <div className="flex justify-between gap-2 text-xl">
 
                             <button 
                                 onClick={() => changeWatched(!movie.watched, movie.id)} 
