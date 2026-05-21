@@ -7,13 +7,15 @@ export function MovieDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    if(!id){
-        return navigate("/", { replace: true});
-    } 
-
     useEffect(() => {
+        if(!id){
+            navigate("/", { replace: true });
+            return;
+        }
+
         loadFilm(id);
-    }, [id])
+
+    }, [id]);
    
 
     if(loading){
