@@ -3,9 +3,8 @@ import { FavoritesContext } from "../../contexts/FavoritesContext";
 import { Link } from "react-router-dom"
 import { IoSearchOutline } from "react-icons/io5";
 
-
 export function Home() {
-    const { filmes, handleLoadMore, loading } = useContext(FavoritesContext);
+    const { filmes, handleLoadMore, loading, addFilm } = useContext(FavoritesContext);
     const filmeDestaque = filmes[0];
 
     if(filmes.length === 0){
@@ -62,6 +61,7 @@ export function Home() {
                             />
                             <button 
                                 className="bg-indigo-800 cursor-pointer w-full mb-auto py-2 font-bold rounded-bl-md rounded-br-md transition-all hover max-w-156.5"
+                                onClick={() => {addFilm(filmeDestaque)}}
                             >
                                 Salvar Filme
                             </button>
