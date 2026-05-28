@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, type ReactNode } from "react";
 import { api } from "../services/tmdbService";
+import toast from "react-hot-toast";
 
 interface FilmesProps {
     id: number;
@@ -73,8 +74,8 @@ export function FavoritesProvider({ children}: ChildrenProviderProps) {
         }
     );
 
-    async function loadFilms(pageNumber: number) {
 
+    async function loadFilms(pageNumber: number) {
         setLoading(true);
         
         try {
@@ -127,16 +128,24 @@ export function FavoritesProvider({ children}: ChildrenProviderProps) {
 
     function addFilm(filme: FavoritesFilmProp){
         if(favList.find((favFilm) => favFilm.id === filme.id)){
-            alert("filme salvo");
+            toast.error("Esse filme já está na sua lista!", {
+                style: {
+                    backgroundColor: "#121212",
+                    color: "#FAFAFA"
+                }
+            });
+
             return;
         }
 
         setFavList((prev) => [...prev, {...filme, watched: false}]);  
+        toast.success("Filme salvo com sucesso!");
     }
 
     function deleteFilm(id: number){
         const newList = favList.filter(item => item.id !== id);
         setFavList(newList);
+        toast.success("Filme removido com sucesso!");
     }
 
     function changeWatched(watched: boolean, id: number) {
