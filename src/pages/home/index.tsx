@@ -35,7 +35,7 @@ export function Home() {
                             
                             <div className="flex lg:text-lg gap-2">
                                 <span>⭐⭐⭐⭐⭐</span>
-                                <strong>{filmeDestaque.vote_average} / 10</strong>
+                                <strong>{filmeDestaque.vote_average.toFixed(1)} / 10</strong>
                             </div>
 
                             <div className="flex gap-8 mt-6 lg:mt-8">
