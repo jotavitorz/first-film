@@ -54,6 +54,7 @@ interface FavoritesProps {
     favList: FavoritesFilmProp[];
     deleteFilm: (id: number) => void;
     changeWatched: (watched: boolean, id: number) => void;
+    searchFilm: (name: string) => void;
 }
 
 const FavoritesContext = createContext({} as FavoritesProps);
@@ -95,6 +96,18 @@ export function FavoritesProvider({ children}: ChildrenProviderProps) {
         }finally {
             setLoading(false);
         }
+    }
+
+    async function searchFilm(name: string) {
+
+        const response = await api.get(`search/movie?query=${name}`, {
+            params: {
+                api_key: import.meta.env.VITE_API_KEY,
+                language: "pt-BR",
+            }
+        })
+
+        setFilmes(response.data.results);
     }
 
     async function loadFilm(id: string) {
@@ -162,7 +175,7 @@ export function FavoritesProvider({ children}: ChildrenProviderProps) {
     }, [favList])
 
     return (
-        <FavoritesContext.Provider value={{filmes, handleLoadMore, loading, loadFilm, filme, addFilm, favList, deleteFilm, changeWatched}}>
+        <FavoritesContext.Provider value={{filmes, handleLoadMore, loading, loadFilm, filme, addFilm, favList, deleteFilm, changeWatched, searchFilm}}>
             {children}
         </FavoritesContext.Provider>
     )

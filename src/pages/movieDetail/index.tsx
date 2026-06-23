@@ -49,9 +49,9 @@ export function MovieDetail() {
                                     <strong>{filme.vote_average.toFixed(1)} / 10</strong>
                                 </div>
 
-                                <div className="grid grid-cols-2 sm:flex gap-2 max-w-72 font-bold mt-4 text-center">
+                                <div className="flex gap-2 w-fit font-bold mt-4 text-center">
                                     {filme.genres.length > 0 && filme.genres.map((genre) => (
-                                        <span key={genre.id} className="rounded-md border-indigo-500  border-2 px-1.5 text-neutral-200" >
+                                        <span key={genre.id} className="rounded-md border-indigo-500 border-2 px-1.5 text-neutral-200" >
                                             {genre.name}
                                         </span>
                                     ))}

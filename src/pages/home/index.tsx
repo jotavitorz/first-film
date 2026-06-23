@@ -1,18 +1,17 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FavoritesContext } from "../../contexts/FavoritesContext";
 import { Link } from "react-router-dom"
 import { IoSearchOutline } from "react-icons/io5";
 
 export function Home() {
-    const { filmes, handleLoadMore, loading, addFilm } = useContext(FavoritesContext);
+    const { filmes, handleLoadMore, loading, addFilm, searchFilm } = useContext(FavoritesContext);
     const filmeDestaque = filmes[0];
+    const [wantedMovie, setWantedMovie] = useState("");
 
-    if(filmes.length === 0){
-        return (
-            <div>
-                <h2 className="pt-10 text-center text-neutral-200 text-3xl font-bold">Carregando Filmess...</h2>
-            </div>
-        )
+
+    function search() {
+        searchFilm(wantedMovie);
+        setWantedMovie("");
     }
 
     return (
@@ -20,7 +19,7 @@ export function Home() {
 
             <main className="text-neutral-200 max-w-7xl py-8 sm:py-16 mx-auto px-4">
                 
-                {filmeDestaque && (
+                {filmeDestaque ? (
                     <section className="flex flex-col-reverse items-center md:flex-row md:justify-around h-full">
 
                         <div className="flex-1 flex flex-col mt-10 md:mt-0">
@@ -68,26 +67,48 @@ export function Home() {
                         </div>
 
                     </section>
+                ) : (
+                    <div></div>
                 )}
 
-
                 <div className="my-20 w-full max-w-xl mx-auto flex shadow-lg shadow-indigo-500">
-                    <input 
+
+                    <input
+                        value={wantedMovie}
+                        onChange={e => setWantedMovie(e.target.value)}
                         type="text" 
                         placeholder="Buscar filme..."
                         className="bg-linear-to-r to-indigo-700 from-slate-900 from-80% h-12 w-full text-neutral-200 px-4 py-2 font-bold rounded-tl-md rounded-bl-md outline-none" 
                     />
-                    <IoSearchOutline className="bg-indigo-700 cursor-pointer text-neutral-200 px-2 h-12 text-3xl rounded-tr-md rounded-br-md" size={50} />
+                    
+                    <button onClick={search}>
+                        <IoSearchOutline  
+                            className="bg-indigo-700 cursor-pointer text-neutral-200 px-2 h-12 text-3xl rounded-tr-md rounded-br-md" 
+                            size={50} 
+                        />
+                    </button>
+
                 </div>
 
-                <h2 className="text-neutral-200 text-4xl font-bold mb-4">Filmes</h2>
+
+
+                {
+                    filmes.length > 0 ? (
+                        <h2 className="text-neutral-200 text-4xl font-bold mb-4">Filmes</h2>                            
+                    ) : (
+                        <div>
+                            <p className="text-center font-bold text-2xl">Filme não encontrado! 😢</p>
+                        </div>
+                    )
+                }
+
 
                 <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 text-neutral-200">
                 {filmes.map((item) => (
                     <Link to={`/movie/${item.id}`} key={item.id} className="bg-linear-to-b to-indigo-950 from-slate-950 from-40% rounded-md w-full h-full hover:scale-105 transition duration-500">
 
                         <div className="p-4 flex flex-col gap-2 cursor-pointer flex-wrap">
-
+                            
                             <img 
                                 className="object-cover h-full w-full rounded-md"
                                 src={`https://image.tmdb.org/t/p/original${item.poster_path}`} 
@@ -106,15 +127,18 @@ export function Home() {
                     </Link>
                 ))}
                 </section>
+
+                {filmes.length > 0 && (
+                    <div className="flex items-center justify-end-safe">
+                        <button 
+                            onClick={handleLoadMore} 
+                            disabled={loading} 
+                            className="mt-10 font-bold cursor-pointer bg-indigo-500 py-2 px-4 rounded-md">
+                            {loading ? "Carregando..." : "Carregar mais"}
+                        </button>  
+                    </div> 
+                )}
                 
-                <div className="flex items-center justify-end-safe">
-                    <button 
-                        onClick={handleLoadMore} 
-                        disabled={loading} 
-                        className="mt-10 font-bold cursor-pointer bg-indigo-500 py-2 px-4 rounded-md">
-                        {loading ? "Carregando..." : "Carregar mais"}
-                    </button>  
-                </div>    
             </main>
         </div>
     )
