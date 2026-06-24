@@ -2,7 +2,7 @@ import { createContext, useState, useEffect, type ReactNode } from "react";
 import { api } from "../services/tmdbService";
 import toast from "react-hot-toast";
 
-interface FilmesProps {
+interface BaseMovie {
     id: number;
     overview: string;
     backdrop_path: string;
@@ -13,6 +13,8 @@ interface FilmesProps {
     release_date: string;
     original_language: string;
 }
+
+interface FilmesProps extends BaseMovie {};
 
 interface FavoritesFilmProp {
     title: string;
@@ -26,18 +28,9 @@ interface GenresProps {
     name: string;
 }
 
-interface FilmeProps {
-    id: number;
-    overview: string;
-    backdrop_path: string;
-    original_title: string;
-    poster_path: string;
-    title: string;
-    vote_average: number;
-    release_date: string;
+interface FilmeProps extends BaseMovie{
     adult: boolean;
     genre_ids: number[];
-    original_language: string;
     popularity: number;
     softcore: boolean;
     vote_count: number;
@@ -76,7 +69,7 @@ export function FavoritesProvider({ children}: ChildrenProviderProps) {
     );
 
 
-    async function loadFilms(pageNumber: number) {
+    async function loadFilms(pageNumber: number): Promise<void> {
         setLoading(true);
         
         try {
@@ -89,7 +82,7 @@ export function FavoritesProvider({ children}: ChildrenProviderProps) {
             })
 
             const allFilm = response.data.results.slice(0, 10);
-            setFilmes([...filmes, ...allFilm]);
+            setFilmes((prev) => [...prev, ...allFilm]);
 
         }catch(error) {
             console.log("Error: " + error)
@@ -100,17 +93,26 @@ export function FavoritesProvider({ children}: ChildrenProviderProps) {
 
     async function searchFilm(name: string) {
 
-        const response = await api.get(`search/movie?query=${name}`, {
-            params: {
-                api_key: import.meta.env.VITE_API_KEY,
-                language: "pt-BR",
-            }
-        })
+        try {
+            const response = await api.get("search/movie", {
+                params: {
+                    query: name,
+                    api_key: import.meta.env.VITE_API_KEY,
+                    language: "pt-BR",
+                }
+            })
 
-        setFilmes(response.data.results);
+            setFilmes(response.data.results);
+        }catch(error) {
+            console.log(error);
+            toast.error("Erro ao buscar filme");
+        }
+
+
     }
 
-    async function loadFilm(id: string) {
+    async function loadFilm(id: string): Promise<void> {
+        setFilme(undefined);
         setLoading(true);
 
         try {
