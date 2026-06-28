@@ -36,7 +36,8 @@ export function Favorites() {
             <section className="flex flex-col gap-4 sm:gap-2 max-w-5xl mx-auto text-indigo-200">
 
                 {favList.map((movie) => (
-                    <div 
+                    <div
+                        key={movie.id}
                         className={`rounded-md flex flex-col md:flex-row my-2 px-6 text-neutral-200 font-bold md:justify-between shadow-lg ${movie.watched ? "shadow-indigo-600" : "shadow-indigo-200"}`}
                     >
 
