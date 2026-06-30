@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom"
-import { IoSearchOutline } from "react-icons/io5";
 import { getNowPlayingMovie, searchMovies } from "../../services/tmdbService";
 import type { MovieProps } from "../../types/movie";
 import toast from "react-hot-toast";
