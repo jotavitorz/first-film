@@ -3,7 +3,7 @@ import { Layout } from "../components/layout/index";
 import { Home } from "../pages/home";
 import { Favorites } from "../pages/favorites";
 import { MovieDetail } from "../pages/movieDetail";
-import { NotFound } from "../pages/notFound";
+import { NotFound } from "../pages/NotFound";
 
 export const routes = createBrowserRouter([
     {
