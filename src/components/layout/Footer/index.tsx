@@ -6,7 +6,7 @@ export function Footer() {
             <h1 className="text-2xl font-bold text-indigo-400">FIRST FILM</h1>
             <div>
                 <p className="text-gray-400 font-bold">
-                    © 2026 First Film. Todos os direitos reservados. <span className="">| @2026</span>
+                    © 2026 First Film. Todos os direitos reservados.
                 </p>
             </div>
         </footer>
